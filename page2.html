@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pendaftaran Pembekal - Majlis Daerah Pengkalan Hulu</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+      min-height: 100vh;
+      padding: 20px 0;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: -50%;
+      right: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
+      animation: rotate 30s linear infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .floating-shapes {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .shape {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.08;
+      animation: float 20s infinite ease-in-out;
+    }
+
+    .shape1 {
+      width: 300px;
+      height: 300px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      top: 10%;
+      left: 5%;
+      animation-delay: 0s;
+    }
+
+    .shape2 {
+      width: 200px;
+      height: 200px;
+      background: linear-gradient(135deg, #f093fb, #f5576c);
+      bottom: 15%;
+      right: 10%;
+      animation-delay: 5s;
+    }
+
+    .shape3 {
+      width: 250px;
+      height: 250px;
+      background: linear-gradient(135deg, #4facfe, #00f2fe);
+      top: 50%;
+      right: 5%;
+      animation-delay: 10s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(50px, 50px) rotate(90deg); }
+      50% { transform: translate(0, 100px) rotate(180deg); }
+      75% { transform: translate(-50px, 50px) rotate(270deg); }
+    }
+
+    .container {
+      max-width: 1200px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .main-card {
+      background: rgba(255, 255, 255, 0.98);
+      border-radius: 30px;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+
+    .header-section {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header-section::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+      animation: rotate 20s linear infinite;
+    }
+
+    .header-section::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, #f093fb 0%, #f5576c 50%, #4facfe 100%);
+      animation: shimmer 3s linear infinite;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .logo-wrapper {
+      position: relative;
+      width: 100px;
+      height: 100px;
+    }
+
+	.logo-circle {
+	  width: 100px;
+	  height: 100px;
+	  border-radius: 50%;
+	  overflow: hidden; /* ⭐ PENTING */
+	  background: white;
+	  display: flex;
+	  align-items: center;
+	  justify-content: center;
+	  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+	  position: relative;
+	  animation: pulse 3s ease-in-out infinite;
+	}
+
+	.logo-circle img {
+	  width: 100%;
+	  height: 100%;
+	  object-fit: cover; /* ⭐ POTONG JADI BULAT */
+	  border-radius: 50%;
+	}
+
+
+    .header-title {
+      flex: 1;
+    }
+
+    .header-title h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin: 0;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      letter-spacing: 1px;
+    }
+
+    .header-title p {
+      margin: 8px 0 0 0;
+      opacity: 0.95;
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+
+    .form-container {
+      padding: 50px;
+    }
+
+    .info-banner {
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+      border-left: 5px solid #667eea;
+      padding: 20px 25px;
+      border-radius: 15px;
+      margin-bottom: 40px;
+      font-size: 1rem;
+      color: #2c3e50;
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.15);
+    }
+
+    .section-title {
+      color: #667eea;
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin: 40px 0 25px 0;
+      padding-bottom: 15px;
+      border-bottom: 3px solid transparent;
+      background: linear-gradient(to right, #667eea 0%, #764ba2 100%) left bottom no-repeat;
+      background-size: 60% 3px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .section-title:first-of-type {
+      margin-top: 0;
+    }
+
+    .section-title svg {
+      width: 28px;
+      height: 28px;
+      fill: #764ba2;
+    }
+
+    .form-label {
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 10px;
+      font-size: 1rem;
+    }
+
+    .required-star {
+      color: #f5576c;
+      margin-left: 4px;
+      font-weight: 700;
+    }
+
+    .form-control, .form-select {
+      border: 2px solid #e0e0e0;
+      border-radius: 12px;
+      padding: 14px 18px;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+      background: white;
+    }
+
+    .form-control:focus, .form-select:focus {
+      border-color: #667eea;
+      box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.15);
+      background: #fafbff;
+    }
+
+    .form-control:hover, .form-select:hover {
+      border-color: #b8c5ea;
+    }
+
+    .form-check {
+      padding: 12px 15px;
+      margin-bottom: 10px;
+      border-radius: 10px;
+      transition: all 0.2s ease;
+      border: 2px solid transparent;
+    }
+
+    .form-check:hover {
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+      border-color: rgba(102, 126, 234, 0.2);
+    }
+
+    .form-check-input {
+      width: 22px;
+      height: 22px;
+      margin-top: 2px;
+      cursor: pointer;
+      border: 2px solid #ccc;
+      transition: all 0.2s ease;
+    }
+
+    .form-check-input:checked {
+      background-color: #667eea;
+      border-color: #667eea;
+      box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+    }
+
+    .form-check-input:hover {
+      border-color: #667eea;
+    }
+
+    .form-check-label {
+      cursor: pointer;
+      margin-left: 10px;
+      font-size: 1rem;
+      color: #2c3e50;
+    }
+
+    .table-responsive {
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      margin: 25px 0;
+    }
+
+    .table {
+      margin-bottom: 0;
+    }
+
+    .table thead {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    .table thead th {
+      padding: 18px 15px;
+      font-weight: 700;
+      border: none;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+    }
+
+    .table tbody tr {
+      transition: all 0.3s ease;
+      background: white;
+    }
+
+    .table tbody tr:hover {
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+      transform: scale(1.01);
+    }
+
+    .table tbody td {
+      padding: 15px;
+      vertical-align: middle;
+      border-color: #e9ecef;
+    }
+
+    .table tbody td input[type="text"],
+    .table tbody td input[type="radio"] {
+      border-radius: 8px;
+    }
+
+    .btn-success, .btn-danger {
+      border-radius: 8px;
+      font-weight: 700;
+      padding: 8px 16px;
+      transition: all 0.3s ease;
+      border: none;
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+      box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+    }
+
+    .btn-success:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+      box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+    }
+
+    .btn-danger:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(220, 53, 69, 0.4);
+    }
+
+    .file-upload-wrapper input[type="file"] {
+      cursor: pointer;
+    }
+
+    .file-upload-wrapper input[type="file"]::file-selector-button {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-right: 15px;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .file-upload-wrapper input[type="file"]::file-selector-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .border.rounded {
+      border: 2px solid #e0e0e0 !important;
+      border-radius: 15px !important;
+      padding: 25px !important;
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.03) 0%, rgba(118, 75, 162, 0.03) 100%) !important;
+    }
+
+    h6.fw-bold {
+      color: #667eea;
+      font-size: 1.2rem;
+      margin-top: 40px;
+      margin-bottom: 20px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-submit {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border: none;
+      padding: 18px 50px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      border-radius: 50px;
+      transition: all 0.3s ease;
+      box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-submit::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .btn-submit:hover::before {
+      left: 100%;
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 50px rgba(102, 126, 234, 0.6);
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .alert {
+      border-radius: 15px;
+      border: none;
+      padding: 25px;
+      font-weight: 600;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      font-size: 1.05rem;
+    }
+
+    .alert-success {
+      background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+      color: white;
+    }
+
+    .alert-danger {
+      background: linear-gradient(135deg, #f5576c 0%, #dc3545 100%);
+      color: white;
+    }
+
+    .footer-text {
+      text-align: center;
+      padding: 30px;
+      color: #666;
+      font-size: 0.95rem;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      border-radius: 0;
+    }
+
+    .footer-text strong {
+      color: #667eea;
+      font-size: 1.1rem;
+    }
+
+    @media (max-width: 768px) {
+      .form-container {
+        padding: 30px 20px;
+      }
+
+      .header-section {
+        padding: 25px 20px;
+      }
+
+      .header-title h1 {
+        font-size: 1.5rem;
+      }
+
+      .logo-section {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .section-title {
+        font-size: 1.1rem;
+      }
+    }
+
+    .spinner-border-sm {
+      width: 1.2rem;
+      height: 1.2rem;
+      border-width: 0.2em;
+    }
+
+    input[type="radio"] {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      accent-color: #667eea;
+    }
+
+    .text-muted {
+      font-size: 0.9rem;
+      color: #6c757d !important;
+      margin-top: 5px;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+<div class="floating-shapes">
+  <div class="shape shape1"></div>
+  <div class="shape shape2"></div>
+  <div class="shape shape3"></div>
+</div>
+
+<div class="container">
+  <div class="main-card">
+    
+    <!-- Header Section -->
+    <div class="header-section">
+      <div class="logo-section">
+        <div class="logo-wrapper">
+          <div class="logo-circle">
+            <img src="https://drive.google.com/thumbnail?id=1t0yW_wCJF7Va86C6BYVtZWCn39RbPBvL&sz=w200" alt="Logo MDPH">
+          </div>
+        </div>
+        <div class="header-title">
+          <h1>MAJLIS DAERAH PENGKALAN HULU</h1>
+          <p>Sistem Pendaftaran Pembekal & Kontraktor</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form Section -->
+    <div class="form-container">
+      
+      <div class="info-banner">
+        <strong>📋 Perhatian:</strong> Sila isi semua maklumat dengan lengkap dan tepat. Pastikan dokumen yang dimuat naik adalah sah dan jelas.
+      </div>
+	  
+	  
+      <form id="myForm">
+
+        <!-- Bahagian 1: Jenis Pendaftaran -->
+        <div class="section-title">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+          </svg>
+          Maklumat Pendaftaran
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Jenis Pendaftaran<span class="required-star">*</span></label>
+          <select name="pendaftaran" class="form-select" required>
+            <option value="">-- Sila Pilih --</option>
+            <option>Pendaftaran Baru</option>
+          </select>
+        </div>
+
+        <div class="mb-4 file-upload-wrapper">
+          <label class="form-label">Muat Naik Gambar Passport<span class="required-star">*</span></label>
+          <input type="file" id="passport" accept="image/*" class="form-control" required>
+          <small class="text-muted">Format: JPG, PNG | Maksimum: 5MB</small>
+        </div>
+
+        <!-- Bahagian 2: Maklumat Perniagaan -->
+        <div class="section-title">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/>
+          </svg>
+          Maklumat Perniagaan
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Jenis Perniagaan<span class="required-star">*</span></label>
+          <select name="jenis_perniagaan" class="form-select" required>
+            <option value="">-- Sila Pilih --</option>
+            <option>Bekalan</option>
+            <option>Perkhidmatan</option>
+            <option>Kerja</option>
+            <option>Perunding</option>
+          </select>
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label">Jenis Sijil yang Dimiliki</label>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="jenis_sijil" value="SSM" id="sijil1">
+            <label class="form-check-label" for="sijil1">
+              Suruhanjaya Syarikat Malaysia (SSM)
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="jenis_sijil" value="CIDB" id="sijil2">
+            <label class="form-check-label" for="sijil2">
+              Construction Industry Development Board (CIDB)
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="jenis_sijil" value="MOF" id="sijil3">
+            <label class="form-check-label" for="sijil3">
+              Ministry of Finance (MOF)
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="jenis_sijil" value="PKK" id="sijil4">
+            <label class="form-check-label" for="sijil4">
+              Pusat Khidmat Kontraktor (PKK)
+            </label>
+          </div>
+        </div>
+
+        <!-- Bahagian 3: Butiran Syarikat -->
+        <div class="section-title">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+          </svg>
+          Butiran Syarikat
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Nama Syarikat<span class="required-star">*</span></label>
+          <input name="nama_syarikat" class="form-control" placeholder="Contoh: ABC Sdn Bhd" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Alamat Syarikat<span class="required-star">*</span></label>
+          <textarea name="alamat" class="form-control" rows="3" placeholder="Masukkan alamat lengkap syarikat" required></textarea>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Bandar<span class="required-star">*</span></label>
+            <input name="bandar" class="form-control" placeholder="Contoh: Pengkalan Hulu" required>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Negeri<span class="required-star">*</span></label>
+            <select name="negeri" class="form-select" required>
+              <option value="">-- Sila Pilih --</option>
+              <option>Johor</option>
+              <option>Kedah</option>
+              <option>Kelantan</option>
+              <option>Melaka</option>
+              <option>Negeri Sembilan</option>
+              <option>Pahang</option>
+              <option>Perak</option>
+              <option>Perlis</option>
+              <option>Pulau Pinang</option>
+              <option>Sabah</option>
+              <option>Sarawak</option>
+              <option>Selangor</option>
+              <option>Terengganu</option>
+              <option>WP Kuala Lumpur</option>
+              <option>WP Labuan</option>
+              <option>WP Putrajaya</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">No. Telefon<span class="required-star">*</span></label>
+            <input name="telefon" type="tel" class="form-control" placeholder="Contoh: 012-3456789" required>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">No. Fax</label>
+            <input name="fax" type="tel" class="form-control" placeholder="Contoh: 05-1234567">
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label">Alamat E-mel</label>
+          <input name="emel" type="email" class="form-control" placeholder="nama@gmail.com">
+        </div>
+
+        <!-- Bahagian 4: Maklumat Pengarah / Pemilik -->
+        <div class="section-title">
+          <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm9 1.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 0-1h-4a.5.5 0 0 0-.5.5M9 8a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 0-1h-4A.5.5 0 0 0 9 8m1 2.5a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 0-1h-3a.5.5 0 0 0-.5.5m-1 2C9 10.567 7.21 9 5 9c-2.086 0-3.8 1.398-3.984 3.181A1 1 0 0 0 2 13h6.96q.04-.245.04-.5M7 6a2 2 0 1 0-4 0 2 2 0 0 0 4 0"/>
+          </svg>
+          Maklumat Pengarah / Pemilik
+        </div>
+		
+		<div class="mb-3">
+          <label class="form-label">Maklumat Pengarah / Pemilik<span class="required-star">*</span></label>
+		</div>
+		
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead>
+              <tr class="text-center">
+                <th>No</th>
+                <th>Nama Penuh</th>
+                <th>No. Kad Pengenalan</th>
+                <th>Alamat</th>
+                <th>Bandar</th>
+                <th>Negeri</th>
+                <th>Poskod</th>
+                <th>Tambah</th>
+              </tr>
+            </thead>
+            <tbody id="directorBody">
+              <tr>
+                <td class="text-center bil">1</td>
+                <td><input type="text" class="form-control" name="pengarah_nama" required></td>
+                <td><input type="text" class="form-control" name="pengarah_ic" required></td>
+                <td><input type="text" class="form-control" name="pengarah_alamat" required></td>
+                <td><input type="text" class="form-control" name="pengarah_bandar" required></td>
+                <td><input type="text" class="form-control" name="pengarah_negeri" required></td>
+                <td><input type="text" class="form-control" name="pengarah_poskod" required></td>
+                <td class="text-center">
+                  <button type="button" class="btn btn-success btn-sm" onclick="addDirectorRow()">+</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="row mt-3">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">No. Pendaftaran Syarikat<span class="required-star">*</span></label>
+            <input type="text" class="form-control" name="no_pendaftaran_syarikat" required>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Taraf Syarikat<span class="required-star">*</span></label>
+            <select class="form-select" name="taraf_syarikat" required>
+              <option value="">-- Sila Pilih --</option>
+              <option>Bumiputera</option>
+              <option>Bukan Bumiputera</option>
+              <option>Syarikat Luar Negeri</option>
+              <option>Syarikat/Agensi Kerajaan</option>
+              <option>Usahasama Berdaftar Di Malaysia</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label class="form-label">Jenis Pendaftaran<span class="required-star">*</span></label>
+            <select class="form-select" name="jenis_pendaftaran_syarikat" required>
+              <option value="">-- Sila Pilih --</option>
+              <option>Persendirian</option>
+              <option>Perkongsian</option>
+              <option>Sendirian Berhad</option>
+              <option>Berhad</option>
+            </select>
+          </div>
+        </div>
+
+        <h6 class="mt-4 fw-bold">Maklumat SSM</h6>
+
+        <div class="row mt-3">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">No. Pendaftaran<span class="required-star">*</span></label>
+            <input type="text" class="form-control" name="ssm_no_pendaftaran" required>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Tarikh Daftar<span class="required-star">*</span></label>
+            <input type="date" class="form-control" name="ssm_tarikh_daftar" required>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Tarikh Tamat<span class="required-star">*</span></label>
+            <input type="date" class="form-control" name="ssm_tarikh_tamat" required>
+          </div>
+        </div>
+
+        <div class="mb-4 file-upload-wrapper">
+          <label class="form-label">Dokumen SSM<span class="required-star">*</span> <small>(Max 4)</small></label>
+          <input type="file" class="form-control" id="dokumenSSM" multiple accept=".pdf,.jpg,.jpeg,.png" required >
+		  <small class="text-muted" id="ssmCount">Tiada fail dipilih</small>
+        </div>
+
+	<label class="form-label">Sijil SSM<span class="required-star">*</span></label>
+        <div class="border rounded p-3 bg-light mb-4">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="agreeSSM" name="agree_ssm" required>
+            <label class="form-check-label" for="agreeSSM">
+              Bahawasanya saya mengesahkan bahawa sepanjang pengetahuan dan kepercayaan saya semua butir-butir yang terkandung di dalam permohonan ini adalah benar dan tepat. Saya juga bersetuju untuk membenarkan tuan/puan melawat kemudahan-kemudahan yang ada serta menyemak butir-butir yang dikemukakan dalam borang ini. Sekiranya butir-butir yang diberi di atas tidak benar, saya bersetuju bahawa permohonan saya boleh ditolak atau atas sekiranya telah didaftar, pendaftaran tersebut boleh ditamatkan dengan serta merta.
+            </label>
+          </div>
+        </div>
+
+        <h6 class="mt-4 fw-bold">Kementerian Kewangan Malaysia <small>(Jika Ada)</small></h6>
+
+        <div class="row mt-3">
+          <div class="col-md-4 mb-3">
+            <label class="form-label">No. Sijil</label>
+            <input type="text" class="form-control" name="mof_no_sijil">
+          </div>
+          <div class="col-md-4 mb-3">
+            <label class="form-label">No. Rujukan</label>
+            <input type="text" class="form-control" name="mof_no_rujukan">
+          </div>
+          <div class="col-md-4 mb-3">
+            <label class="form-label">Tempoh Sah Laku</label>
+            <input type="date" class="form-control" name="mof_tempoh_sah">
+          </div>
+        </div>
+
+        <h6 class="mt-4 fw-bold">Maklumat CIDB</h6>
+
+	<div class="row mt-3">
+	  <div class="col-md-4 mb-3">
+		<label class="form-label">No. Pendaftaran<span class="required-star">*</span></label>
+		<input type="text" class="form-control" name="cidb_no_pendaftaran" required>
+	  </div>
+	  <div class="col-md-4 mb-3">
+		<label class="form-label">Tarikh Daftar<span class="required-star">*</span></label>
+		<input type="date" class="form-control" name="cidb_tarikh_daftar" required>
+	  </div>
+	  <div class="col-md-4 mb-3">
+		<label class="form-label">Tarikh Tamat<span class="required-star">*</span></label>
+		<input type="date" class="form-control" name="cidb_tarikh_tamat" required>
+	  </div>
+	</div>
+
+	<!-- 🔽 JADUAL BARU MAKLUMAT CIDB -->
+	<div class="table-responsive mt-3">
+	  <table class="table table-bordered">
+		<thead class="text-center">
+		  <tr>
+			<th>No</th>
+			<th>Gred</th>
+			<th>Kategori</th>
+			<th>Kod Pengkhususan</th>
+			<th>Tambah</th>
+		  </tr>
+		</thead>
+		<tbody id="cidbBody">
+		  <tr>
+        <td class="text-center bil">1</td>
+        <td>
+          <select class="form-select" name="cidb_gred[]" required>
+            <option value="">Sila Pilih</option>
+            <option value="G1">G1 (200,000.00 dan ke bawah)</option>
+            <option value="G2">G2 (200,001.00 hingga 500,000.00)</option>
+            <option value="G3">G3 (500,001.00 hingga 1,000,000.00)</option>
+            <option value="G4">G4 (1,000,001.00 hingga 3,000,000.00)</option>
+            <option value="G5">G5 (3,000,001.00 hingga 5,000,000.00)</option>
+            <option value="G6">G6 (5,000,001.00 hingga 10,000,000.00)</option>
+            <option value="G7">G7 (10,000,001.00 dan ke atas)</option>
+          </select>
+        </td>
+        <td>
+          <select class="form-select" name="cidb_kategori[]" required>
+            <option value="">Sila Pilih</option>
+            <option value="CE">CE – Kejuruteraan Awam</option>
+            <option value="B">B – Bangunan</option>
+            <option value="ME">ME – Mekanikal & Elektrikal</option>
+			<option value="ME">F – Fasiliti</option>
+          </select>
+        </td>
+        <td>
+          <input type="text" class="form-control" name="cidb_pengkhususan[]" placeholder="Contoh: CE01, B04">
+        </td>
+        <td class="text-center">
+          <button type="button" class="btn btn-success btn-sm" onclick="addCIDBRow()">+</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+		<div class="mb-4 file-upload-wrapper">
+          <label class="form-label">Dokumen CIDB<span class="required-star">*</span> <small>(Max 4)</small></label>
+          <input type="file" class="form-control" id="dokumenCIDB" multiple accept=".pdf,.jpg,.jpeg,.png" required>
+		  <small class="text-muted" id="cidbCount">Tiada fail dipilih</small>
+        </div>
+
+        <!-- Bahagian Pembayaran -->
+<div class="section-title">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+  </svg>
+  Maklumat Pembayaran
+</div>
+
+<div class="alert alert-info">
+  <strong>🏦 Pembayaran Secara Atas Talian (MAYBANK SAHAJA)</strong><br><br>
+
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <label class="form-label">Gred CIDB <span class="required-star">*</span></label>
+      <select class="form-select" id="cidbGred" name="cidb_gred_bayaran" required>
+        <option value="">-- Sila Pilih Gred --</option>
+        <option value="G1" data-amount="50">GRED G1 – RM 50</option>
+        <option value="G2" data-amount="75">GRED G2 – RM 75</option>
+        <option value="G3" data-amount="100">GRED G3 – RM 100</option>
+        <option value="G4/G5" data-amount="150">GRED G4 / G5 – RM 150</option>
+        <option value="G6/G7" data-amount="250">GRED G6 / G7 – RM 250</option>
+      </select>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <label class="form-label">Jumlah Bayaran (RM)</label>
+      <input type="text" class="form-control" id="jumlahBayaran" name="jumlah_bayaran"
+             placeholder="Akan dipaparkan secara automatik" readonly>
+    </div>
+  </div>
+
+  <!-- Arahan Rujukan Pembayaran -->
+  <div class="alert alert-warning mt-3">
+    <strong>📌 Penting:</strong><br>
+    Sila pastikan anda mengisi maklumat berikut semasa membuat pembayaran di Maybank:
+    <ul class="mb-0">
+      <li><strong>RUJUKAN 1:</strong> PENDAFTARAN KONTRAKTOR</li>
+      <li><strong>RUJUKAN 2:</strong> NAMA SYARIKAT</li>
+    </ul>
+    Maklumat ini mestilah jelas pada <strong>resit pembayaran Maybank</strong> yang dimuat naik.
+  </div>
+       
+   <hr>
+   
+  <table class="table table-borderless mb-0">
+    <tr>
+      <td width="35%"><strong>Pautan Pembayaran</strong></td>
+      <td>
+        : <a href="https://www.maybank2u.com.my/home/m2u/common/login.do"
+             target="_blank"
+             class="fw-bold text-primary text-decoration-none">
+            Klik Di Sini Untuk Pembayaran
+          </a>
+      </td>
+    </tr>
+  </table>
+
+
+  <small class="text-danger">
+    ⚠️ Sila buat bayaran mengikut Gred CIDB yang dipilih dan muat naik bukti pembayaran.
+    Permohonan tanpa bayaran tidak akan diproses.
+  </small>
+</div>
+
+
+        <div class="mb-4 file-upload-wrapper">
+          <label class="form-label">Muat Naik Bukti Pembayaran <span class="required-star">*</span></label>
+          <input type="file" class="form-control" id="buktiBayaran" name="bukti_bayaran" accept="image/jpeg,image/png" required>
+          <small class="text-muted">Format dibenarkan: JPG, PNG | Saiz maksimum: 5MB</small>
+        </div>
+
+        <button class="btn btn-primary btn-submit w-100" type="submit" id="submitBtn">
+          <span id="btnText">Hantar Permohonan</span>
+          <span id="btnSpinner" class="spinner-border spinner-border-sm d-none ms-2" role="status"></span>
+        </button>
+      </form>
+
+      <!-- Success Message -->
+      <div id="successMsg" class="alert alert-success mt-4 d-none">
+        <strong>✓ Berjaya!</strong> Permohonan anda telah berjaya dihantar. Terima kasih.
+      </div>
+
+      <!-- Error Message -->
+      <div id="errorMsg" class="alert alert-danger mt-4 d-none">
+        <strong>✗ Ralat!</strong> <span id="errorText">Sila cuba lagi.</span>
+      </div>
+
+	<!-- 🔐 HALAMAN PENGESAHAN (SELEPAS HANTAR) -->
+	<div id="confirmationPage" class="d-none mt-4">
+
+	  <div class="section-title">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+        </svg>
+        Pengesahan Maklumat Kontraktor
+      </div>
+
+      <div class="border rounded p-4 mb-4" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);">
+        
+        <div class="alert alert-info mb-4" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%); border-left: 5px solid #667eea;">
+          <strong>📋 Nota Penting:</strong> Sila sahkan maklumat anda dengan lengkap sebelum menghantar permohonan.
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label">Nama Penuh<span class="required-star">*</span></label>
+          <input type="text" id="sahNama" class="form-control" placeholder="Nama Penuh Seperti Dalam Kad Pengenalan" required>
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label">No. Kad Pengenalan<span class="required-star">*</span></label>
+          <input type="text" id="sahIC" class="form-control" placeholder="Contoh: 900101-01-1234" required>
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label">Nama Syarikat<span class="required-star">*</span></label>
+          <input type="text" id="sahSyarikat" class="form-control" placeholder="Nama Syarikat Yang Didaftarkan" required readonly>
+        </div>
+
+   
+
+        <div class="form-check mb-4" style="padding: 20px; background: linear-gradient(135deg, rgba(245, 87, 108, 0.1) 0%, rgba(220, 53, 69, 0.1) 100%); border-radius: 15px; border: 2px solid rgba(245, 87, 108, 0.3);">
+          <input class="form-check-input" type="checkbox" id="agreeFinal" required style="width: 24px; height: 24px; margin-top: 4px;">
+          <label class="form-check-label" for="agreeFinal" style="margin-left: 15px; font-weight: 600; color: #2c3e50;">
+            Saya mengesahkan bahawa semua maklumat yang diberikan adalah tepat dan saya bertanggungjawab sepenuhnya terhadap ketepatan maklumat tersebut. Sekiranya maklumat yang diberikan tidak benar, saya bersetuju bahawa permohonan saya boleh ditolak atau pendaftaran boleh ditamatkan dengan serta merta.
+          </label>
+        </div>
+
+        <div class="text-center">
+          <button class="btn btn-submit" onclick="finalSubmit()" style="min-width: 300px;">
+            <span id="finalBtnText">Sah & Hantar Permohonan</span>
+            <span id="finalSpinner" class="spinner-border spinner-border-sm d-none ms-2" role="status"></span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Success Message After Final Submit -->
+      <div id="finalSuccessMsg" class="alert alert-success d-none mt-4">
+        <h5 class="fw-bold mb-3">✓ Permohonan Berjaya Dihantar!</h5>
+        <p class="mb-2">Terima kasih, <strong id="successNama"></strong>!</p>
+        <p class="mb-0">Permohonan pendaftaran syarikat <strong id="successSyarikat"></strong> telah berjaya dihantar dan sedang diproses oleh pihak Majlis Daerah Pengkalan Hulu.</p>
+        <hr class="my-3">
+      </div>
+
+      <!-- Error Message -->
+      <div id="finalErrorMsg" class="alert alert-danger d-none mt-4">
+        <strong>✗ Ralat!</strong> <span id="finalErrorText">Sila cuba lagi.</span>
+      </div>
+
+	</div>
+
+    </div>
+
+    <div class="footer-text">
+      <strong>Majlis Daerah Pengkalan Hulu</strong><br>
+      Hulu Perak, Perak Darul Ridzuan<br>
+      © 2024 Hak Cipta Terpelihara
+    </div>
+
+  </div>
+</div>
+
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwUBICTYxYzrWtiqza7gkaVa0zo3TqtBjXw0XjlKK9IO1l5k6CCF8ZrQ73Mm2c2NxGYEw/exec";
+
+function addDirectorRow() {
+  const tbody = document.getElementById("directorBody");
+  const rowCount = tbody.rows.length + 1;
+  const row = document.createElement("tr");
+  row.innerHTML = `
+    <td class="text-center bil">${rowCount}</td>
+    <td><input type="text" class="form-control" name="pengarah_nama" required></td>
+    <td><input type="text" class="form-control" name="pengarah_ic" required></td>
+    <td><input type="text" class="form-control" name="pengarah_alamat" required></td>
+    <td><input type="text" class="form-control" name="pengarah_bandar" required></td>
+    <td><input type="text" class="form-control" name="pengarah_negeri" required></td>
+    <td><input type="text" class="form-control" name="pengarah_poskod" required></td>
+    <td class="text-center">
+      <button type="button" class="btn btn-danger btn-sm" onclick="removeDirectorRow(this)">−</button>
+    </td>
+  `;
+  tbody.appendChild(row);
+}
+
+function removeDirectorRow(btn) {
+  btn.closest("tr").remove();
+  document.querySelectorAll(".bil").forEach((el, i) => el.innerText = i + 1);
+}
+
+function addCIDBRow() {
+  const tbody = document.getElementById("cidbBody");
+  const rowCount = tbody.rows.length + 1;
+
+  const row = document.createElement("tr");
+  row.innerHTML = `
+    <td class="text-center bil">${rowCount}</td>
+    <td>
+      <select class="form-select" name="cidb_gred[]" required>
+        <option value="">Sila Pilih</option>
+        <option value="G1">G1 (200,000.00 dan ke bawah)</option>
+        <option value="G2">G2 (200,001.00 hingga 500,000.00)</option>
+        <option value="G3">G3 (500,001.00 hingga 1,000,000.00)</option>
+        <option value="G4">G4 (1,000,001.00 hingga 3,000,000.00)</option>
+        <option value="G5">G5 (3,000,001.00 hingga 5,000,000.00)</option>
+        <option value="G6">G6 (5,000,001.00 hingga 10,000,000.00)</option>
+        <option value="G7">G7 (10,000,001.00 dan ke atas)</option>
+      </select>
+    </td>
+    <td>
+      <select class="form-select" name="cidb_kategori[]" required>
+        <option value="">Sila Pilih</option>
+        <option value="CE">CE – Kejuruteraan Awam</option>
+        <option value="B">B – Bangunan</option>
+        <option value="ME">ME – Mekanikal & Elektrikal</option>
+      </select>
+    </td>
+    <td>
+      <input type="text" class="form-control" name="cidb_pengkhususan[]" placeholder="Contoh: CE01, B04">
+    </td>
+    <td class="text-center">
+      <button type="button" class="btn btn-danger btn-sm" onclick="removeCIDBRow(this)">−</button>
+    </td>
+  `;
+  tbody.appendChild(row);
+}
+
+function removeCIDBRow(btn) {
+  btn.closest("tr").remove();
+  document.querySelectorAll("#cidbBody .bil").forEach((el, i) => {
+    el.innerText = i + 1;
+  });
+}
+
+async function convertFileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result.split(",")[1]);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+
+function updateFileCount(inputId, textId, label) {
+  const input = document.getElementById(inputId);
+  const text = document.getElementById(textId);
+
+  input.addEventListener("change", function () {
+    const count = this.files.length;
+
+    if (count === 0) {
+      text.textContent = "Tiada fail dipilih";
+    } else if (count === 1) {
+      text.textContent = `1 fail ${label} telah dimuat naik`;
+    } else {
+      text.textContent = `${count} fail ${label} telah dimuat naik`;
+    }
+  });
+}
+
+// Dokumen SSM
+updateFileCount("dokumenSSM", "ssmCount", "SSM");
+
+// Dokumen CIDB
+updateFileCount("dokumenCIDB", "cidbCount", "CIDB");
+
+
+function finalSubmit() {
+  const nama = document.getElementById("sahNama").value.trim();
+  const ic = document.getElementById("sahIC").value.trim();
+  const syarikat = document.getElementById("sahSyarikat").value.trim();
+
+  if (!nama || !ic || !syarikat) {
+    alert("Sila lengkapkan semua maklumat pengesahan.");
+    return;
+  }
+
+  alert("✅ Pengesahan berjaya. Permohonan telah disahkan.");
+
+  // OPTIONAL: redirect ke halaman tamat
+  // window.location.href = "terima-kasih.html";
+}
+
+
+// Auto calculate payment amount
+document.getElementById("cidbGred").addEventListener("change", function () {
+  const selectedOption = this.options[this.selectedIndex];
+  const amount = selectedOption.getAttribute("data-amount") || "";
+  document.getElementById("jumlahBayaran").value = amount ? `RM ${amount}.00` : "";
+});
+
+document.getElementById("myForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
+
+  const submitBtn = document.getElementById("submitBtn");
+  const btnText = document.getElementById("btnText");
+  const btnSpinner = document.getElementById("btnSpinner");
+  const successMsg = document.getElementById("successMsg");
+  const errorMsg = document.getElementById("errorMsg");
+  const errorText = document.getElementById("errorText");
+
+  submitBtn.disabled = true;
+  btnText.textContent = "Sedang menghantar...";
+  btnSpinner.classList.remove("d-none");
+  successMsg.classList.add("d-none");
+  errorMsg.classList.add("d-none");
+
+  try {
+    const formData = new FormData(this);
+    const payload = {};
+
+    const checkedSijil = [];
+    document.querySelectorAll('input[name="jenis_sijil"]:checked').forEach(checkbox => {
+      checkedSijil.push(checkbox.value);
+    });
+    payload.jenis_sijil = checkedSijil.join(", ");
+
+    for (let [key, value] of formData.entries()) {
+      if (key === "jenis_sijil") {
+        continue;
+      } else if (key.startsWith("pengarah_")) {
+        if (!payload[key]) payload[key] = [];
+        payload[key].push(value);
+      } else {
+        payload[key] = value;
+      }
+    }
+	
+    const passportInput = document.getElementById("passport");
+    const passportFile = passportInput.files[0];
+    
+    if (!passportFile) {
+      throw new Error("Sila muat naik gambar passport");
+    }
+    if (passportFile.size > 5 * 1024 * 1024) {
+      throw new Error("Saiz passport terlalu besar (Max 5MB)");
+    }
+    
+    const passportBase64 = await convertFileToBase64(passportFile);
+    payload.passportData = passportBase64;
+    payload.passportName = passportFile.name;
+    payload.passportType = passportFile.type;
+
+    const ssmFiles = document.getElementById("dokumenSSM").files;
+    if (ssmFiles.length === 0) throw new Error("Sila muat naik dokumen SSM");
+    if (ssmFiles.length > 4) throw new Error("Maksimum 4 fail SSM");
+    
+    payload.ssmFilesData = [];
+    for (let i = 0; i < ssmFiles.length; i++) {
+      const file = ssmFiles[i];
+      payload.ssmFilesData.push({
+        data: await convertFileToBase64(file),
+        name: file.name || `ssm_${i+1}.pdf`,
+        type: file.type || "application/pdf"
+      });
+    }
+
+    const cidbFiles = document.getElementById("dokumenCIDB").files;
+    if (cidbFiles.length === 0) throw new Error("Sila muat naik dokumen CIDB");
+    if (cidbFiles.length > 4) throw new Error("Maksimum 4 fail CIDB");
+    
+    payload.cidbFilesData = [];
+    for (let i = 0; i < cidbFiles.length; i++) {
+      const file = cidbFiles[i];
+      payload.cidbFilesData.push({
+        data: await convertFileToBase64(file),
+        name: file.name || `cidb_${i+1}.pdf`,
+        type: file.type || "application/pdf"
+      });
+    }
+
+    const buktiBayaranInput = document.getElementById("buktiBayaran");
+    const buktiBayaranFile = buktiBayaranInput.files[0];
+    
+    if (!buktiBayaranFile) {
+      throw new Error("Sila muat naik bukti pembayaran");
+    }
+    if (buktiBayaranFile.size > 5 * 1024 * 1024) {
+      throw new Error("Saiz bukti bayaran terlalu besar (Max 5MB)");
+    }
+    
+    const buktiBayaranBase64 = await convertFileToBase64(buktiBayaranFile);
+    payload.buktiBayaranData = buktiBayaranBase64;
+    payload.buktiBayaranName = buktiBayaranFile.name;
+    payload.buktiBayaranType = buktiBayaranFile.type;
+
+    const response = await fetch(SCRIPT_URL, {
+      method: "POST",
+      body: JSON.stringify(payload)
+    });
+
+    const result = await response.json();
+
+    if (result.status === "success") {
+
+  // Sembunyikan borang
+  document.getElementById("myForm").classList.add("d-none");
+
+  // Isi auto nama syarikat
+  document.getElementById("sahSyarikat").value =
+    document.querySelector('input[name="nama_syarikat"]').value || "";
+
+  // Papar halaman pengesahan
+  document.getElementById("confirmationPage").classList.remove("d-none");
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+ else {
+      throw new Error(result.message || "Ralat tidak diketahui");
+    }
+
+  } catch (error) {
+    console.error(error);
+    errorText.textContent = error.message;
+    errorMsg.classList.remove("d-none");
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  } finally {
+    submitBtn.disabled = false;
+    btnText.textContent = "Hantar Permohonan";
+    btnSpinner.classList.add("d-none");
+  }
+});
+</script>
+
+</body>
+</html>
+
+
