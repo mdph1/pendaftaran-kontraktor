@@ -1069,8 +1069,7 @@
 
 <script>
 
-<script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxaOjh3IUaE0TcdUyNVySyQH1e-x0qAQRcuSrch_hT7nPrw7MI9oF2nOIVI2z5O-6PbwA/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwUBICTYxYzrWtiqza7gkaVa0zo3TqtBjXw0XjlKK9IO1l5k6CCF8ZrQ73Mm2c2NxGYEw/exec";
 
 function addDirectorRow() {
   const tbody = document.getElementById("directorBody");
@@ -1106,13 +1105,13 @@ function addCIDBRow() {
     <td>
       <select class="form-select" name="cidb_gred[]" required>
         <option value="">Sila Pilih</option>
-        <option value="G1|200000">G1 (200,000.00 dan ke bawah)</option>
-        <option value="G2|500000">G2 (200,001.00 hingga 500,000.00)</option>
-        <option value="G3|1000000">G3 (500,001.00 hingga 1,000,000.00)</option>
-        <option value="G4|3000000">G4 (1,000,001.00 hingga 3,000,000.00)</option>
-        <option value="G5|5000000">G5 (3,000,001.00 hingga 5,000,000.00)</option>
-        <option value="G6|10000000">G6 (5,000,001.00 hingga 10,000,000.00)</option>
-        <option value="G7|999999999">G7 (10,000,001.00 dan ke atas)</option>
+        <option value="G1">G1 (200,000.00 dan ke bawah)</option>
+        <option value="G2">G2 (200,001.00 hingga 500,000.00)</option>
+        <option value="G3">G3 (500,001.00 hingga 1,000,000.00)</option>
+        <option value="G4">G4 (1,000,001.00 hingga 3,000,000.00)</option>
+        <option value="G5">G5 (3,000,001.00 hingga 5,000,000.00)</option>
+        <option value="G6">G6 (5,000,001.00 hingga 10,000,000.00)</option>
+        <option value="G7">G7 (10,000,001.00 dan ke atas)</option>
       </select>
     </td>
     <td>
@@ -1149,6 +1148,7 @@ async function convertFileToBase64(file) {
   });
 }
 
+
 function updateFileCount(inputId, textId, label) {
   const input = document.getElementById(inputId);
   const text = document.getElementById(textId);
@@ -1172,8 +1172,6 @@ updateFileCount("dokumenSSM", "ssmCount", "SSM");
 // Dokumen CIDB
 updateFileCount("dokumenCIDB", "cidbCount", "CIDB");
 
-// Bukti Pembayaran
-updateFileCount("buktiBayaran", "buktiBayaranCount", "Bukti Pembayaran");
 
 function finalSubmit() {
   const nama = document.getElementById("sahNama").value.trim();
@@ -1191,30 +1189,12 @@ function finalSubmit() {
   // window.location.href = "terima-kasih.html";
 }
 
-// Auto calculate payment amount based on CIDB grade
-document.addEventListener("DOMContentLoaded", function() {
-  const form = document.getElementById("myForm");
-  
-  // Listen for changes in CIDB grade selects
-  form.addEventListener("change", function(e) {
-    if (e.target.name === "cidb_gred[]") {
-      const selectedValue = e.target.value;
-      if (selectedValue) {
-        const parts = selectedValue.split("|");
-        const amount = parts[1];
-        
-        // Update the hidden amount field if it exists
-        const amountField = document.getElementById("jumlahBayaran");
-        if (amountField) {
-          const formattedAmount = new Intl.NumberFormat('ms-MY', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-          }).format(amount);
-          amountField.value = `RM ${formattedAmount}`;
-        }
-      }
-    }
-  });
+
+// Auto calculate payment amount
+document.getElementById("cidbGred").addEventListener("change", function () {
+  const selectedOption = this.options[this.selectedIndex];
+  const amount = selectedOption.getAttribute("data-amount") || "";
+  document.getElementById("jumlahBayaran").value = amount ? `RM ${amount}.00` : "";
 });
 
 document.getElementById("myForm").addEventListener("submit", async function(e) {
@@ -1237,31 +1217,23 @@ document.getElementById("myForm").addEventListener("submit", async function(e) {
     const formData = new FormData(this);
     const payload = {};
 
-    // Process checkboxes for certificate types
     const checkedSijil = [];
     document.querySelectorAll('input[name="jenis_sijil"]:checked').forEach(checkbox => {
       checkedSijil.push(checkbox.value);
     });
     payload.jenis_sijil = checkedSijil.join(", ");
 
-    // Process form fields
     for (let [key, value] of formData.entries()) {
       if (key === "jenis_sijil") {
         continue;
       } else if (key.startsWith("pengarah_")) {
         if (!payload[key]) payload[key] = [];
         payload[key].push(value);
-      } else if (key.endsWith("[]")) {
-        // Handle array fields (cidb_gred[], cidb_kategori[], etc.)
-        const cleanKey = key.replace("[]", "");
-        if (!payload[cleanKey]) payload[cleanKey] = [];
-        payload[cleanKey].push(value);
       } else {
         payload[key] = value;
       }
     }
-    
-    // --- PASSPORT FILE ---
+	
     const passportInput = document.getElementById("passport");
     const passportFile = passportInput.files[0];
     
@@ -1277,7 +1249,6 @@ document.getElementById("myForm").addEventListener("submit", async function(e) {
     payload.passportName = passportFile.name;
     payload.passportType = passportFile.type;
 
-    // --- SSM FILES ---
     const ssmFiles = document.getElementById("dokumenSSM").files;
     if (ssmFiles.length === 0) throw new Error("Sila muat naik dokumen SSM");
     if (ssmFiles.length > 4) throw new Error("Maksimum 4 fail SSM");
@@ -1292,7 +1263,6 @@ document.getElementById("myForm").addEventListener("submit", async function(e) {
       });
     }
 
-    // --- CIDB FILES ---
     const cidbFiles = document.getElementById("dokumenCIDB").files;
     if (cidbFiles.length === 0) throw new Error("Sila muat naik dokumen CIDB");
     if (cidbFiles.length > 4) throw new Error("Maksimum 4 fail CIDB");
@@ -1307,7 +1277,6 @@ document.getElementById("myForm").addEventListener("submit", async function(e) {
       });
     }
 
-    // --- PAYMENT PROOF FILE (BUKTI PEMBAYARAN) ---
     const buktiBayaranInput = document.getElementById("buktiBayaran");
     const buktiBayaranFile = buktiBayaranInput.files[0];
     
@@ -1315,7 +1284,7 @@ document.getElementById("myForm").addEventListener("submit", async function(e) {
       throw new Error("Sila muat naik bukti pembayaran");
     }
     if (buktiBayaranFile.size > 5 * 1024 * 1024) {
-      throw new Error("Saiz bukti pembayaran terlalu besar (Max 5MB)");
+      throw new Error("Saiz bukti bayaran terlalu besar (Max 5MB)");
     }
     
     const buktiBayaranBase64 = await convertFileToBase64(buktiBayaranFile);
@@ -1323,7 +1292,6 @@ document.getElementById("myForm").addEventListener("submit", async function(e) {
     payload.buktiBayaranName = buktiBayaranFile.name;
     payload.buktiBayaranType = buktiBayaranFile.type;
 
-    // --- SEND TO GOOGLE APPS SCRIPT ---
     const response = await fetch(SCRIPT_URL, {
       method: "POST",
       body: JSON.stringify(payload)
@@ -1332,18 +1300,20 @@ document.getElementById("myForm").addEventListener("submit", async function(e) {
     const result = await response.json();
 
     if (result.status === "success") {
-      // Hide form
-      document.getElementById("myForm").classList.add("d-none");
 
-      // Auto-fill company name
-      document.getElementById("sahSyarikat").value =
-        document.querySelector('input[name="nama_syarikat"]').value || "";
+  // Sembunyikan borang
+  document.getElementById("myForm").classList.add("d-none");
 
-      // Show confirmation page
-      document.getElementById("confirmationPage").classList.remove("d-none");
+  // Isi auto nama syarikat
+  document.getElementById("sahSyarikat").value =
+    document.querySelector('input[name="nama_syarikat"]').value || "";
 
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    } else {
+  // Papar halaman pengesahan
+  document.getElementById("confirmationPage").classList.remove("d-none");
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+ else {
       throw new Error(result.message || "Ralat tidak diketahui");
     }
 
@@ -1362,6 +1332,5 @@ document.getElementById("myForm").addEventListener("submit", async function(e) {
 
 </body>
 </html>
-
 
 
