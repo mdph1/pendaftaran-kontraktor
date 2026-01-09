@@ -885,7 +885,7 @@
             <option value="CE">CE – Kejuruteraan Awam</option>
             <option value="B">B – Bangunan</option>
             <option value="ME">ME – Mekanikal & Elektrikal</option>
-			<option value="F">F – Fasiliti</option>
+			<option value="ME">F – Fasiliti</option>
           </select>
         </td>
         <td>
@@ -1068,7 +1068,7 @@
 </div>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxaOjh3IUaE0TcdUyNVySyQH1e-x0qAQRcuSrch_hT7nPrw7MI9oF2nOIVI2z5O-6PbwA/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwEOhAZYTvm4Psf_oDFb-NIC9v7KyoI-IIIrKnDwpVeeHPQ9BO459ZjKd8DBXbYfGe-DQ/exec";
 
 function addDirectorRow() {
   const tbody = document.getElementById("directorBody");
@@ -1100,7 +1100,7 @@ function addCIDBRow() {
 
   const row = document.createElement("tr");
   row.innerHTML = `
-    <td class="text-center bil">${rowCount}</td>
+    <td class="text-center bil-cidb">${rowCount}</td>
     <td>
       <select class="form-select" name="cidb_gred[]" required>
         <option value="">Sila Pilih</option>
@@ -1119,7 +1119,7 @@ function addCIDBRow() {
         <option value="CE">CE – Kejuruteraan Awam</option>
         <option value="B">B – Bangunan</option>
         <option value="ME">ME – Mekanikal & Elektrikal</option>
-		<option value="F">F – Fasiliti</option>
+        <option value="F">F – Fasiliti</option>
       </select>
     </td>
     <td>
@@ -1134,7 +1134,7 @@ function addCIDBRow() {
 
 function removeCIDBRow(btn) {
   btn.closest("tr").remove();
-  document.querySelectorAll("#cidbBody .bil").forEach((el, i) => {
+  document.querySelectorAll("#cidbBody .bil-cidb").forEach((el, i) => {
     el.innerText = i + 1;
   });
 }
@@ -1147,7 +1147,6 @@ async function convertFileToBase64(file) {
     reader.readAsDataURL(file);
   });
 }
-
 
 function updateFileCount(inputId, textId, label) {
   const input = document.getElementById(inputId);
@@ -1172,23 +1171,83 @@ updateFileCount("dokumenSSM", "ssmCount", "SSM");
 // Dokumen CIDB
 updateFileCount("dokumenCIDB", "cidbCount", "CIDB");
 
-
 function finalSubmit() {
   const nama = document.getElementById("sahNama").value.trim();
   const ic = document.getElementById("sahIC").value.trim();
   const syarikat = document.getElementById("sahSyarikat").value.trim();
+  const agreeFinal = document.getElementById("agreeFinal").checked;
 
   if (!nama || !ic || !syarikat) {
     alert("Sila lengkapkan semua maklumat pengesahan.");
     return;
   }
 
-  alert("✅ Pengesahan berjaya. Permohonan telah disahkan.");
+  if (!agreeFinal) {
+    alert("Sila tandakan persetujuan sebelum menghantar.");
+    return;
+  }
 
-  // OPTIONAL: redirect ke halaman tamat
-  // window.location.href = "terima-kasih.html";
+  // Show loading state
+  const finalBtn = document.querySelector('#confirmationPage .btn-submit');
+  const finalBtnText = document.getElementById("finalBtnText");
+  const finalSpinner = document.getElementById("finalSpinner");
+  
+  finalBtn.disabled = true;
+  finalBtnText.textContent = "Sedang menghantar...";
+  finalSpinner.classList.remove("d-none");
+
+  // Prepare final submission data
+  const finalPayload = {
+    verification: {
+      nama: nama,
+      ic: ic,
+      syarikat: syarikat,
+      timestamp: new Date().toISOString()
+    }
+  };
+
+  // Send verification to Google Apps Script
+  fetch(SCRIPT_URL, {
+    method: "POST",
+    body: JSON.stringify(finalPayload)
+  })
+  .then(response => response.json())
+  .then(result => {
+    if (result.status === "success") {
+      // Hide confirmation page
+      document.getElementById("confirmationPage").classList.add("d-none");
+      
+      // Show success message
+      document.getElementById("finalSuccessMsg").classList.remove("d-none");
+      document.getElementById("successNama").textContent = nama;
+      document.getElementById("successSyarikat").textContent = syarikat;
+      
+      // Hide any error message
+      document.getElementById("finalErrorMsg").classList.add("d-none");
+      
+      // Scroll to top to show success message
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      throw new Error(result.message || "Ralat tidak diketahui");
+    }
+  })
+  .catch(error => {
+    console.error(error);
+    
+    // Show error message
+    document.getElementById("finalErrorText").textContent = error.message;
+    document.getElementById("finalErrorMsg").classList.remove("d-none");
+    document.getElementById("finalSuccessMsg").classList.add("d-none");
+    
+    // Scroll to top to show error
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  })
+  .finally(() => {
+    finalBtn.disabled = false;
+    finalBtnText.textContent = "Sah & Hantar Permohonan";
+    finalSpinner.classList.add("d-none");
+  });
 }
-
 
 // Auto calculate payment amount
 document.getElementById("cidbGred").addEventListener("change", function () {
@@ -1217,23 +1276,30 @@ document.getElementById("myForm").addEventListener("submit", async function(e) {
     const formData = new FormData(this);
     const payload = {};
 
+    // Handle checkbox jenis sijil
     const checkedSijil = [];
     document.querySelectorAll('input[name="jenis_sijil"]:checked').forEach(checkbox => {
       checkedSijil.push(checkbox.value);
     });
     payload.jenis_sijil = checkedSijil.join(", ");
 
+    // Collect all form data
     for (let [key, value] of formData.entries()) {
       if (key === "jenis_sijil") {
         continue;
       } else if (key.startsWith("pengarah_")) {
         if (!payload[key]) payload[key] = [];
         payload[key].push(value);
+      } else if (key === "cidb_gred[]" || key === "cidb_kategori[]" || key === "cidb_pengkhususan[]") {
+        const cleanKey = key.replace("[]", "");
+        if (!payload[cleanKey]) payload[cleanKey] = [];
+        payload[cleanKey].push(value);
       } else {
         payload[key] = value;
       }
     }
-	
+
+    // --- 1. UPLOAD PASSPORT ---
     const passportInput = document.getElementById("passport");
     const passportFile = passportInput.files[0];
     
@@ -1249,6 +1315,7 @@ document.getElementById("myForm").addEventListener("submit", async function(e) {
     payload.passportName = passportFile.name;
     payload.passportType = passportFile.type;
 
+    // --- 2. UPLOAD SSM FILES ---
     const ssmFiles = document.getElementById("dokumenSSM").files;
     if (ssmFiles.length === 0) throw new Error("Sila muat naik dokumen SSM");
     if (ssmFiles.length > 4) throw new Error("Maksimum 4 fail SSM");
@@ -1263,6 +1330,7 @@ document.getElementById("myForm").addEventListener("submit", async function(e) {
       });
     }
 
+    // --- 3. UPLOAD CIDB FILES ---
     const cidbFiles = document.getElementById("dokumenCIDB").files;
     if (cidbFiles.length === 0) throw new Error("Sila muat naik dokumen CIDB");
     if (cidbFiles.length > 4) throw new Error("Maksimum 4 fail CIDB");
@@ -1277,6 +1345,7 @@ document.getElementById("myForm").addEventListener("submit", async function(e) {
       });
     }
 
+    // --- 4. UPLOAD BUKTI PEMBAYARAN ---
     const buktiBayaranInput = document.getElementById("buktiBayaran");
     const buktiBayaranFile = buktiBayaranInput.files[0];
     
@@ -1292,6 +1361,7 @@ document.getElementById("myForm").addEventListener("submit", async function(e) {
     payload.buktiBayaranName = buktiBayaranFile.name;
     payload.buktiBayaranType = buktiBayaranFile.type;
 
+    // Send to Google Apps Script
     const response = await fetch(SCRIPT_URL, {
       method: "POST",
       body: JSON.stringify(payload)
@@ -1300,20 +1370,19 @@ document.getElementById("myForm").addEventListener("submit", async function(e) {
     const result = await response.json();
 
     if (result.status === "success") {
+      // Hide form
+      document.getElementById("myForm").classList.add("d-none");
 
-  // Sembunyikan borang
-  document.getElementById("myForm").classList.add("d-none");
+      // Auto-fill company name
+      document.getElementById("sahSyarikat").value =
+        document.querySelector('input[name="nama_syarikat"]').value || "";
 
-  // Isi auto nama syarikat
-  document.getElementById("sahSyarikat").value =
-    document.querySelector('input[name="nama_syarikat"]').value || "";
+      // Show confirmation page
+      document.getElementById("confirmationPage").classList.remove("d-none");
 
-  // Papar halaman pengesahan
-  document.getElementById("confirmationPage").classList.remove("d-none");
-
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
- else {
+      // Scroll to top of page
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
       throw new Error(result.message || "Ralat tidak diketahui");
     }
 
@@ -1332,7 +1401,3 @@ document.getElementById("myForm").addEventListener("submit", async function(e) {
 
 </body>
 </html>
-
-
-
-
