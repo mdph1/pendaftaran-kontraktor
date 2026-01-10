@@ -485,6 +485,30 @@
       color: white;
     }
 
+	.payment-link-button {
+	  display: inline-block;
+	  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	  color: white;
+	  padding: 12px 25px;
+	  border-radius: 25px;
+	  text-decoration: none;
+	  font-weight: 700;
+	  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+	}
+
+.payment-link-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .payment-link-button {
+    width: 100%;
+    display: block;
+    text-align: center;
+  }
+}
     .footer-text {
       text-align: center;
       padding: 30px;
@@ -952,18 +976,17 @@
        
    <hr>
    
-  <table class="table table-borderless mb-0">
-    <tr>
-      <td width="35%"><strong>Pautan Pembayaran</strong></td>
-      <td>
-        : <a href="https://www.maybank2u.com.my/home/m2u/common/login.do"
-             target="_blank"
-             class="fw-bold text-primary text-decoration-none">
-            Klik Di Sini Untuk Pembayaran
-          </a>
-      </td>
-    </tr>
-  </table>
+  <!-- 🔧 MOBILE-RESPONSIVE PAYMENT LINK -->
+  <div class="payment-link-section">
+    <div class="payment-link-row">
+      <span class="payment-link-label">Pautan Pembayaran:</span>
+      <a href="https://www.maybank2u.com.my/home/m2u/common/login.do"
+         target="_blank"
+         class="payment-link-button">
+        ➜ Klik Di Sini Untuk Pembayaran
+      </a>
+    </div>
+  </div>
 
 
   <small class="text-danger">
