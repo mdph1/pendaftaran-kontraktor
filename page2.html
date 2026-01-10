@@ -310,13 +310,16 @@
 
     .table-responsive {
       border-radius: 15px;
-      overflow: hidden;
-      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-      margin: 25px 0;
-    }
+      overflow-x: auto;        
+	  overflow-y: visible;     
+	  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+	  margin: 25px 0;
+	  -webkit-overflow-scrolling: touch;  
+	}
 
     .table {
       margin-bottom: 0;
+	  min-width: 800px;  
     }
 
     .table thead {
@@ -992,6 +995,55 @@
         <strong>✗ Ralat!</strong> <span id="errorText">Sila cuba lagi.</span>
       </div>
 
+<!-- SUCCESS PAGE (HIDDEN BY DEFAULT) -->
+<div id="successPage" class="d-none text-center py-5">
+  <div style="max-width: 600px; margin: 0 auto;">
+    <!-- Success Icon -->
+    <div style="font-size: 80px; margin-bottom: 30px;">
+      <svg viewBox="0 0 24 24" style="width: 100px; height: 100px; display: inline-block;" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="11" fill="none" stroke="#28a745" stroke-width="2"/>
+        <path d="M7 12l3 3 7-7" fill="none" stroke="#28a745" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <!-- Success Message -->
+    <h2 style="color: #28a745; font-weight: 700; font-size: 2rem; margin-bottom: 15px;">
+      ✓ Berjaya!
+    </h2>
+    
+    <p style="font-size: 1.2rem; color: #2c3e50; margin-bottom: 10px; font-weight: 600;">
+      Permohonan Anda Telah Berjaya Dihantar
+    </p>
+
+    <p style="font-size: 1rem; color: #666; margin-bottom: 30px; line-height: 1.6;">
+    Terima kasih kerana telah mengemukakan permohonan pendaftaran sebagai pembekal atau kontraktor dengan Majlis Daerah Pengkalan Hulu.
+	Permohonan ini telah diterima dan akan diproses mengikut prosedur yang ditetapkan oleh pihak Majlis.
+    </p>
+
+
+    <!-- Contact Info -->
+    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                color: white; padding: 25px; border-radius: 15px; margin-bottom: 30px;">
+      <h5 style="margin-top: 0; margin-bottom: 15px; font-weight: 700;">Hubungi kami jika ada pertanyaan</h5>
+      <p style="margin: 8px 0;">📞 <strong>Telefon:</strong> 04-477 8148</p>
+      <p style="margin: 8px 0;">📧 <strong>Fax:</strong> 04-477 8735</p>
+      <p style="margin: 8px 0;">🕐 <strong>Jam Operasi:</strong> Isnin - Jumaat, 8:00AM - 5:00PM</p>
+    </div>
+
+    <!-- Back Button -->
+    <button onclick="location.href = window.location.href" 
+            style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                   color: white; border: none; padding: 15px 40px; 
+                   border-radius: 50px; font-size: 1rem; font-weight: 700; 
+                   cursor: pointer; transition: all 0.3s ease;"
+            onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 10px 30px rgba(102,126,234,0.4)'"
+            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(102,126,234,0.3)'"
+            style="box-shadow: 0 4px 15px rgba(102,126,234,0.3);">
+      Kembali ke Laman Utama
+    </button>
+  </div>
+</div>
+
     <div class="footer-text">
       <strong>Majlis Daerah Pengkalan Hulu</strong><br>
       Hulu Perak, Perak Darul Ridzuan<br>
@@ -1004,12 +1056,13 @@
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwEOhAZYTvm4Psf_oDFb-NIC9v7KyoI-IIIrKnDwpVeeHPQ9BO459ZjKd8DBXbYfGe-DQ/exec";
 
+// ✅ FIXED: Director Row Management
 function addDirectorRow() {
   const tbody = document.getElementById("directorBody");
   const rowCount = tbody.rows.length + 1;
   const row = document.createElement("tr");
   row.innerHTML = `
-    <td class="text-center bil">${rowCount}</td>
+    <td class="text-center director-bil">${rowCount}</td>
     <td><input type="text" class="form-control" name="pengarah_nama" required></td>
     <td><input type="text" class="form-control" name="pengarah_ic" required></td>
     <td><input type="text" class="form-control" name="pengarah_alamat" required></td>
@@ -1021,20 +1074,32 @@ function addDirectorRow() {
     </td>
   `;
   tbody.appendChild(row);
+  updateDirectorNumbers();
 }
 
 function removeDirectorRow(btn) {
   btn.closest("tr").remove();
-  document.querySelectorAll(".bil").forEach((el, i) => el.innerText = i + 1);
+  updateDirectorNumbers();
 }
 
+function updateDirectorNumbers() {
+  const tbody = document.getElementById("directorBody");
+  const rows = tbody.querySelectorAll("tr");
+  rows.forEach((row, index) => {
+    const bilCell = row.querySelector(".director-bil");
+    if (bilCell) {
+      bilCell.innerText = index + 1;
+    }
+  });
+}
+
+// ✅ FIXED: CIDB Row Management
 function addCIDBRow() {
   const tbody = document.getElementById("cidbBody");
   const rowCount = tbody.rows.length + 1;
-
   const row = document.createElement("tr");
   row.innerHTML = `
-    <td class="text-center bil-cidb">${rowCount}</td>
+    <td class="text-center cidb-bil">${rowCount}</td>
     <td>
       <select class="form-select" name="cidb_gred[]" required>
         <option value="">Sila Pilih</option>
@@ -1064,12 +1129,22 @@ function addCIDBRow() {
     </td>
   `;
   tbody.appendChild(row);
+  updateCIDBNumbers();
 }
 
 function removeCIDBRow(btn) {
   btn.closest("tr").remove();
-  document.querySelectorAll("#cidbBody .bil-cidb").forEach((el, i) => {
-    el.innerText = i + 1;
+  updateCIDBNumbers();
+}
+
+function updateCIDBNumbers() {
+  const tbody = document.getElementById("cidbBody");
+  const rows = tbody.querySelectorAll("tr");
+  rows.forEach((row, index) => {
+    const bilCell = row.querySelector(".cidb-bil");
+    if (bilCell) {
+      bilCell.innerText = index + 1;
+    }
   });
 }
 
@@ -1105,84 +1180,6 @@ updateFileCount("dokumenSSM", "ssmCount", "SSM");
 // Dokumen CIDB
 updateFileCount("dokumenCIDB", "cidbCount", "CIDB");
 
-function finalSubmit() {
-  const nama = document.getElementById("sahNama").value.trim();
-  const ic = document.getElementById("sahIC").value.trim();
-  const syarikat = document.getElementById("sahSyarikat").value.trim();
-  const agreeFinal = document.getElementById("agreeFinal").checked;
-
-  if (!nama || !ic || !syarikat) {
-    alert("Sila lengkapkan semua maklumat pengesahan.");
-    return;
-  }
-
-  if (!agreeFinal) {
-    alert("Sila tandakan persetujuan sebelum menghantar.");
-    return;
-  }
-
-  // Show loading state
-  const finalBtn = document.querySelector('#confirmationPage .btn-submit');
-  const finalBtnText = document.getElementById("finalBtnText");
-  const finalSpinner = document.getElementById("finalSpinner");
-  
-  finalBtn.disabled = true;
-  finalBtnText.textContent = "Sedang menghantar...";
-  finalSpinner.classList.remove("d-none");
-
-  // Prepare final submission data
-  const finalPayload = {
-    verification: {
-      nama: nama,
-      ic: ic,
-      syarikat: syarikat,
-      timestamp: new Date().toISOString()
-    }
-  };
-
-  // Send verification to Google Apps Script
-  fetch(SCRIPT_URL, {
-    method: "POST",
-    body: JSON.stringify(finalPayload)
-  })
-  .then(response => response.json())
-  .then(result => {
-    if (result.status === "success") {
-      // Hide confirmation page
-      document.getElementById("confirmationPage").classList.add("d-none");
-      
-      // Show success message
-      document.getElementById("finalSuccessMsg").classList.remove("d-none");
-      document.getElementById("successNama").textContent = nama;
-      document.getElementById("successSyarikat").textContent = syarikat;
-      
-      // Hide any error message
-      document.getElementById("finalErrorMsg").classList.add("d-none");
-      
-      // Scroll to top to show success message
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    } else {
-      throw new Error(result.message || "Ralat tidak diketahui");
-    }
-  })
-  .catch(error => {
-    console.error(error);
-    
-    // Show error message
-    document.getElementById("finalErrorText").textContent = error.message;
-    document.getElementById("finalErrorMsg").classList.remove("d-none");
-    document.getElementById("finalSuccessMsg").classList.add("d-none");
-    
-    // Scroll to top to show error
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  })
-  .finally(() => {
-    finalBtn.disabled = false;
-    finalBtnText.textContent = "Sah & Hantar Permohonan";
-    finalSpinner.classList.add("d-none");
-  });
-}
-
 // Auto calculate payment amount
 document.getElementById("cidbGred").addEventListener("change", function () {
   const selectedOption = this.options[this.selectedIndex];
@@ -1190,6 +1187,7 @@ document.getElementById("cidbGred").addEventListener("change", function () {
   document.getElementById("jumlahBayaran").value = amount ? `RM ${amount}.00` : "";
 });
 
+// ✅ CORRECTED FORM SUBMISSION
 document.getElementById("myForm").addEventListener("submit", async function(e) {
   e.preventDefault();
 
@@ -1302,23 +1300,24 @@ document.getElementById("myForm").addEventListener("submit", async function(e) {
     });
 
     const result = await response.json();
-
-    if (result.status === "success") {
-      // Hide form
-      document.getElementById("myForm").classList.add("d-none");
-
-      // Auto-fill company name
-      document.getElementById("sahSyarikat").value =
-        document.querySelector('input[name="nama_syarikat"]').value || "";
-
-      // Show confirmation page
-      document.getElementById("confirmationPage").classList.remove("d-none");
-
-      // Scroll to top of page
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    } else {
-      throw new Error(result.message || "Ralat tidak diketahui");
-    }
+if (result.status === "success") {
+  // Hide form
+  document.getElementById("myForm").classList.add("d-none");
+  
+  // Hide info banner
+  document.querySelector(".info-banner").classList.add("d-none");
+  
+  // Hide footer
+  document.querySelector(".footer-text").classList.add("d-none");
+  
+  // ✅ SHOW SUCCESS PAGE (NEW!)
+  document.getElementById("successPage").classList.remove("d-none");
+ 
+  // Scroll to top of page
+  window.scrollTo({ top: 0, behavior: "smooth" });
+} else {
+  throw new Error(result.message || "Ralat tidak diketahui");
+}
 
   } catch (error) {
     console.error(error);
