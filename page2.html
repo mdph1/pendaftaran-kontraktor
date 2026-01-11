@@ -308,184 +308,82 @@
       color: #2c3e50;
     }
 
-    /* ========== DESKTOP TABLE VIEW ========== */
-.table-responsive-desktop {
-  display: none;
-  border-radius: 15px;
-  overflow: hidden;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-  margin: 25px 0;
-}
+    .table-responsive {
+      border-radius: 15px;
+      overflow-x: auto;        
+	  overflow-y: visible;     
+	  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+	  margin: 25px 0;
+	  -webkit-overflow-scrolling: touch;  
+	}
 
-.table-responsive {
-  border-radius: 15px;
-  overflow-x: auto;        
-  overflow-y: visible;     
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-  margin: 25px 0;
-  -webkit-overflow-scrolling: touch;  
-}
+    .table {
+      margin-bottom: 0;
+	  min-width: 800px;  
+    }
 
-.table {
-  margin-bottom: 0;
-  min-width: 800px;
-}
+    .table thead {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
 
-.table thead {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-}
+    .table thead th {
+      padding: 18px 15px;
+      font-weight: 700;
+      border: none;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+    }
 
-.table thead th {
-  padding: 18px 15px;
-  font-weight: 700;
-  border: none;
-  text-transform: uppercase;
-  font-size: 0.9rem;
-  letter-spacing: 0.5px;
-}
+    .table tbody tr {
+      transition: all 0.3s ease;
+      background: white;
+    }
 
-.table tbody tr {
-  transition: all 0.3s ease;
-  background: white;
-}
+    .table tbody tr:hover {
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+      transform: scale(1.01);
+    }
 
-.table tbody tr:hover {
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
-  transform: scale(1.01);
-}
+    .table tbody td {
+      padding: 15px;
+      vertical-align: middle;
+      border-color: #e9ecef;
+    }
 
-.table tbody td {
-  padding: 15px;
-  vertical-align: middle;
-  border-color: #e9ecef;
-}
+    .table tbody td input[type="text"],
+    .table tbody td input[type="radio"] {
+      border-radius: 8px;
+    }
 
-.table tbody td input[type="text"],
-.table tbody td input[type="radio"] {
-  border-radius: 8px;
-}
+    .btn-success, .btn-danger {
+      border-radius: 8px;
+      font-weight: 700;
+      padding: 8px 16px;
+      transition: all 0.3s ease;
+      border: none;
+    }
 
-/* ========== MOBILE CARD VIEW ========== */
-.card-container {
-  display: grid;
-  gap: 20px;
-  margin: 25px 0;
-}
+    .btn-success {
+      background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+      box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+    }
 
-.info-card {
-  background: white;
-  border-radius: 15px;
-  padding: 20px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-  border-left: 5px solid #667eea;
-}
+    .btn-success:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+    }
 
-.card-number {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  font-weight: 700;
-  font-size: 1.1rem;
-  margin-bottom: 15px;
-}
+    .btn-danger {
+      background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+      box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+    }
 
-.card-row {
-  margin-bottom: 15px;
-}
-
-.card-row label {
-  display: block;
-  font-weight: 600;
-  color: #667eea;
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 8px;
-}
-
-.card-row input {
-  width: 100%;
-  border: 2px solid #e0e0e0;
-  border-radius: 10px;
-  padding: 12px 15px;
-  font-size: 1rem;
-  font-family: 'Poppins', sans-serif;
-  transition: all 0.3s ease;
-}
-
-.card-row input:focus {
-  border-color: #667eea;
-  box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.15);
-  outline: none;
-}
-
-.card-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 20px;
-  padding-top: 20px;
-  border-top: 2px solid #e0e0e0;
-}
-
-.btn-add-card {
-  flex: 1;
-  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-  color: white;
-  border: none;
-  padding: 12px;
-  border-radius: 10px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.btn-add-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
-}
-
-.btn-delete-card {
-  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
-  color: white;
-  border: none;
-  padding: 12px 20px;
-  border-radius: 10px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.btn-delete-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(220, 53, 69, 0.4);
-}
-
-/* ========== RESPONSIVE BREAKPOINT ========== */
-@media (min-width: 992px) {
-  .table-responsive-desktop {
-    display: block;
-  }
-
-  .card-container {
-    display: none;
-  }
-}
-
-@media (max-width: 991px) {
-  .table-responsive-desktop {
-    display: none;
-  }
-
-  .card-container {
-    display: grid;
-  }
-}
+    .btn-danger:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(220, 53, 69, 0.4);
+    }
 
     .file-upload-wrapper input[type="file"] {
       cursor: pointer;
@@ -846,81 +744,39 @@
         </div>
 		
 		<div class="mb-3">
-  <label class="form-label">Maklumat Pengarah / Pemilik<span class="required-star">*</span></label>
-</div>
-
-<!-- DESKTOP TABLE VIEW -->
-<div class="table-responsive-desktop">
-  <table class="table table-bordered">
-    <thead>
-      <tr class="text-center">
-        <th>No</th>
-        <th>Nama Penuh</th>
-        <th>No. Kad Pengenalan</th>
-        <th>Alamat</th>
-        <th>Bandar</th>
-        <th>Negeri</th>
-        <th>Poskod</th>
-        <th>Tambah</th>
-      </tr>
-    </thead>
-    <tbody id="directorTableBody">
-      <tr>
-        <td class="text-center">1</td>
-        <td><input type="text" class="form-control" name="pengarah_nama" required></td>
-        <td><input type="text" class="form-control" name="pengarah_ic" required></td>
-        <td><input type="text" class="form-control" name="pengarah_alamat" required></td>
-        <td><input type="text" class="form-control" name="pengarah_bandar" required></td>
-        <td><input type="text" class="form-control" name="pengarah_negeri" required></td>
-        <td><input type="text" class="form-control" name="pengarah_poskod" required></td>
-        <td class="text-center">
-          <button type="button" class="btn btn-success btn-sm" onclick="addDirectorRow()">+</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-<!-- MOBILE CARD VIEW -->
-<div class="card-container" id="directorCardContainer">
-  <div class="info-card">
-    <div class="card-number">1</div>
-
-    <div class="card-row">
-      <label>Nama Penuh</label>
-      <input type="text" name="pengarah_nama" placeholder="Masukkan nama penuh" required>
-    </div>
-
-    <div class="card-row">
-      <label>No. Kad Pengenalan</label>
-      <input type="text" name="pengarah_ic" placeholder="Contoh: 123456789012" required>
-    </div>
-
-    <div class="card-row">
-      <label>Alamat</label>
-      <input type="text" name="pengarah_alamat" placeholder="Masukkan alamat" required>
-    </div>
-
-    <div class="card-row">
-      <label>Bandar</label>
-      <input type="text" name="pengarah_bandar" placeholder="Contoh: Pengkalan Hulu" required>
-    </div>
-
-    <div class="card-row">
-      <label>Negeri</label>
-      <input type="text" name="pengarah_negeri" placeholder="Contoh: Perak" required>
-    </div>
-
-    <div class="card-row">
-      <label>Poskod</label>
-      <input type="text" name="pengarah_poskod" placeholder="Contoh: 34000" required>
-    </div>
-
-    <div class="card-actions">
-      <button type="button" class="btn-add-card" onclick="addDirectorCard()">+ Tambah Pengarah</button>
-    </div>
-  </div>
-</div>
+          <label class="form-label">Maklumat Pengarah / Pemilik<span class="required-star">*</span></label>
+		</div>
+		
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead>
+              <tr class="text-center">
+                <th>No</th>
+                <th>Nama Penuh</th>
+                <th>No. Kad Pengenalan</th>
+                <th>Alamat</th>
+                <th>Bandar</th>
+                <th>Negeri</th>
+                <th>Poskod</th>
+                <th>Tambah</th>
+              </tr>
+            </thead>
+            <tbody id="directorBody">
+              <tr>
+                <td class="text-center bil">1</td>
+                <td><input type="text" class="form-control" name="pengarah_nama" required></td>
+                <td><input type="text" class="form-control" name="pengarah_ic" required></td>
+                <td><input type="text" class="form-control" name="pengarah_alamat" required></td>
+                <td><input type="text" class="form-control" name="pengarah_bandar" required></td>
+                <td><input type="text" class="form-control" name="pengarah_negeri" required></td>
+                <td><input type="text" class="form-control" name="pengarah_poskod" required></td>
+                <td class="text-center">
+                  <button type="button" class="btn btn-success btn-sm" onclick="addDirectorRow()">+</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
         <div class="row mt-3">
           <div class="col-md-6 mb-3">
@@ -1224,78 +1080,12 @@
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwEOhAZYTvm4Psf_oDFb-NIC9v7KyoI-IIIrKnDwpVeeHPQ9BO459ZjKd8DBXbYfGe-DQ/exec";
 
 // ✅ FIXED: Director Row Management
-let directorCardCount = 1;
-
-function addDirectorCard() {
-  directorCardCount++;
-  const container = document.getElementById("directorCardContainer");
-  
-  const newCard = document.createElement("div");
-  newCard.className = "info-card";
-  newCard.innerHTML = `
-    <div class="card-number">${directorCardCount}</div>
-
-    <div class="card-row">
-      <label>Nama Penuh</label>
-      <input type="text" name="pengarah_nama" placeholder="Masukkan nama penuh" required>
-    </div>
-
-    <div class="card-row">
-      <label>No. Kad Pengenalan</label>
-      <input type="text" name="pengarah_ic" placeholder="Contoh: 123456789012" required>
-    </div>
-
-    <div class="card-row">
-      <label>Alamat</label>
-      <input type="text" name="pengarah_alamat" placeholder="Masukkan alamat" required>
-    </div>
-
-    <div class="card-row">
-      <label>Bandar</label>
-      <input type="text" name="pengarah_bandar" placeholder="Contoh: Pengkalan Hulu" required>
-    </div>
-
-    <div class="card-row">
-      <label>Negeri</label>
-      <input type="text" name="pengarah_negeri" placeholder="Contoh: Perak" required>
-    </div>
-
-    <div class="card-row">
-      <label>Poskod</label>
-      <input type="text" name="pengarah_poskod" placeholder="Contoh: 34000" required>
-    </div>
-
-    <div class="card-actions">
-      <button type="button" class="btn-add-card" onclick="addDirectorCard()">+ Tambah Pengarah</button>
-      <button type="button" class="btn-delete-card" onclick="deleteDirectorCard(this)">Padam</button>
-    </div>
-  `;
-  
-  container.appendChild(newCard);
-  updateDirectorCardNumbers();
-}
-
-function deleteDirectorCard(btn) {
-  const card = btn.closest(".info-card");
-  card.remove();
-  updateDirectorCardNumbers();
-}
-
-function updateDirectorCardNumbers() {
-  const cards = document.querySelectorAll("#directorCardContainer .info-card");
-  cards.forEach((card, index) => {
-    card.querySelector(".card-number").textContent = index + 1;
-  });
-  directorCardCount = cards.length;
-}
-
 function addDirectorRow() {
-  const tbody = document.getElementById("directorTableBody");
+  const tbody = document.getElementById("directorBody");
   const rowCount = tbody.rows.length + 1;
-  
-  const newRow = document.createElement("tr");
-  newRow.innerHTML = `
-    <td class="text-center">${rowCount}</td>
+  const row = document.createElement("tr");
+  row.innerHTML = `
+    <td class="text-center director-bil">${rowCount}</td>
     <td><input type="text" class="form-control" name="pengarah_nama" required></td>
     <td><input type="text" class="form-control" name="pengarah_ic" required></td>
     <td><input type="text" class="form-control" name="pengarah_alamat" required></td>
@@ -1303,15 +1093,27 @@ function addDirectorRow() {
     <td><input type="text" class="form-control" name="pengarah_negeri" required></td>
     <td><input type="text" class="form-control" name="pengarah_poskod" required></td>
     <td class="text-center">
-      <button type="button" class="btn btn-danger btn-sm" onclick="deleteDirectorRow(this)">−</button>
+      <button type="button" class="btn btn-danger btn-sm" onclick="removeDirectorRow(this)">−</button>
     </td>
   `;
-  
-  tbody.appendChild(newRow);
+  tbody.appendChild(row);
+  updateDirectorNumbers();
 }
 
-function deleteDirectorRow(btn) {
+function removeDirectorRow(btn) {
   btn.closest("tr").remove();
+  updateDirectorNumbers();
+}
+
+function updateDirectorNumbers() {
+  const tbody = document.getElementById("directorBody");
+  const rows = tbody.querySelectorAll("tr");
+  rows.forEach((row, index) => {
+    const bilCell = row.querySelector(".director-bil");
+    if (bilCell) {
+      bilCell.innerText = index + 1;
+    }
+  });
 }
 
 // ✅ FIXED: CIDB Row Management
@@ -1555,6 +1357,5 @@ if (result.status === "success") {
 
 </body>
 </html>
-
 
 
